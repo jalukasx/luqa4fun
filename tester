@@ -8,26 +8,57 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
 #define SERVOMAX 580
 
 
-const int buttonpin0 = 7;
-const int buttonpin1 = 4;
+const int buttonPin0 = 7;
+const int buttonPin1 = 4;
 
-int buttonState0 = 0;
-int guzik0 = 0;
+int buttonState = 0;
+byte guzik0 = 0;
+
+int ledState = HIGH;         // the current state of the output pin
+int lastButtonState = LOW;   // the previous reading from the input pin
+
+unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
 
 void setup()
 {
 pwm.begin();
 pwm.setPWMFreq(50);
   
-    pinMode(buttonpin0, INPUT);
-    pinMode(buttonpin1, INPUT);
+    pinMode(buttonPin0, INPUT);
+    pinMode(buttonPin1, INPUT);
    
 }
 
-void loop()
-{
- buttonState0 = digitalRead(buttonpin0);
- if (buttonState0 == HIGH) 
+void loop() {
+
+  // read the state of the switch into a local variable:
+  int reading = digitalRead(buttonPin0);
+
+  // check to see if you just pressed the button
+  // (i.e. the input went from LOW to HIGH), and you've waited long enough
+  // since the last press to ignore any noise:
+
+  // If the switch changed, due to noise or pressing:
+  if (reading != lastButtonState) {
+    // reset the debouncing timer
+    lastDebounceTime = millis();
+  }
+
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    // whatever the reading is at, it's been there for longer than the debounce
+    // delay, so take it as the actual current state:
+
+    // if the button state has changed:
+    if (reading != buttonState) {
+      buttonState = reading;
+
+      // only toggle the LED if the new button state is HIGH
+      if (buttonState == HIGH) {
+        ledState = !ledState;
+      }
+    }
+  
  {
     if (guzik0==0) 
     { 
@@ -40,4 +71,4 @@ void loop()
       pwm.setPWM(0, 0, 380);
     }
  }  
-}
+  }
