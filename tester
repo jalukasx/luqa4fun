@@ -4,8 +4,8 @@
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
 
-#define SERVOMIN 270
-#define SERVOMAX 380
+#define SERVOMIN 100
+#define SERVOMAX 580
 
 
 const int buttonpin0 = 7;
