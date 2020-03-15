@@ -31,6 +31,21 @@ pwm.setPWMFreq(50);
 
 void loop() {
 
+ buttonState = digitalRead(buttonPin0);
+ if (buttonState == HIGH) 
+ {
+    if (guzik0==0) 
+    { 
+      guzik0=1; 
+      pwm.setPWM(0, 0, 270);
+    }
+    else
+    { 
+      guzik0=0;
+      pwm.setPWM(0, 0, 380);
+    }
+ } 
+  
   // read the state of the switch into a local variable:
   int reading = digitalRead(buttonPin0);
 
@@ -53,19 +68,9 @@ void loop() {
       buttonState = reading;
 
     }
-  
- {
-    if (guzik0==0) 
-    { 
-      guzik0=1; 
-      pwm.setPWM(0, 0, 270);
-    }
-    else
-    { 
-      guzik0=0;
-      pwm.setPWM(0, 0, 380);
-    }
-   }  
   }
-   lastButtonState = reading;
+
+
+  // save the reading. Next time through the loop, it'll be the lastButtonState:
+  lastButtonState = reading;
 }
