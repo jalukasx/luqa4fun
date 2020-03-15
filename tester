@@ -1,3 +1,7 @@
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+#include <Servo.h>
+
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
 
 #define SERVOMIN 270
@@ -7,8 +11,8 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
 const int buttonpin0 = 7;
 const int buttonpin1 = 4;
 
-int buttonState0 =0;
-int buttonState1 =1;
+int buttonState0 = 0;
+int guzik0 = 0;
 
 void setup()
 {
@@ -20,21 +24,20 @@ pwm.setPWMFreq(50);
    
 }
 
-void loop(){
-
-      buttonState0 = digitalRead(buttonpin0);
-      if (buttonState0 = HIGH) {
-      if (buttonState0 = 0) { buttonState1; } else { buttonState0; }
-    }   
-   }
-  
-      if (buttonState0 = 0) { servo.setPWM(0, 0, 270); } else { servo.setPWM(0, 0, 380);
-      
-      buttonState1 = digitalRead(buttonpin0);
-
-      if (buttonState = HIGH) {
-      if (buttonState1 = 0) { buttonState1; serwo.setPWM(0, 0, 380);} else { buttonState0 = 0; serwo.setPWM(0, 0, 270); }
-
-   }
-  }
- }
+void loop()
+{
+ buttonState0 = digitalRead(buttonpin0);
+ if (buttonState0 == HIGH) 
+ {
+    if (guzik0==0) 
+    { 
+      guzik0=1; 
+      pwm.setPWM(0, 0, 270);
+    }
+    else
+    { 
+      guzik0=0;
+      pwm.setPWM(0, 0, 380);
+    }
+ }  
+}
