@@ -1,0 +1,84 @@
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+#include <Servo.h>
+
+
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
+#define SERVOMIN 270
+#define SERVOMAX 380
+
+
+uint16_t servonum =0;
+const int servoNUM1 = 0;
+const int servoNUM2 = 3;
+
+int angle = 0;
+
+
+
+const int buttonpin0 = 7;
+int buttonState0 =0;
+
+const int buttonpin1 = 4;
+int buttonState1 =0;
+
+void setup(){
+  Serial.begin(9600);
+ pwm.begin();
+ pwm.setPWMFreq(60);
+    pinMode(buttonpin0, INPUT);
+    pinMode(buttonpin1, INPUT);
+   
+}
+
+void setServoPulse(uint16_t n, double pulse) {
+  double pulselength;
+ 
+  pulselength = 1000000;   // 1,000,000 us per second
+  pulselength /= 60;   // 60 Hz
+  pulselength /= 4096;  // 12 bits of resolution
+  pulse *= 1000;
+  pulse /= pulselength;
+  pwm.setPWM(n, 0, 0);
+}
+
+
+void loop(){
+  if(digitalRead(7) == HIGH){
+   for(uint16_t pulselen = SERVOMIN; pulselen < SERVOMAX; pulselen++){
+    if (digitalRead(7) == HIGH){
+    pwm.setPWM(0, 0, pulselen);
+    delay(30);
+    }
+   }
+  }
+   if (digitalRead(7) == HIGH){
+   for(uint16_t pulselen = SERVOMAX; pulselen > SERVOMIN; pulselen--){
+    if (digitalRead(7) == HIGH){
+    pwm.setPWM(0, 0, pulselen);
+    delay(30);
+     }
+    }
+   }
+
+     if(digitalRead(4) == HIGH){
+   for(uint16_t pulselen = SERVOMIN; pulselen < SERVOMAX; pulselen++){
+    if (digitalRead(4) == HIGH){
+    pwm.setPWM(3, 0, pulselen);
+    delay(30);
+    }
+   }
+  }
+   if (digitalRead(4) == HIGH){
+   for(uint16_t pulselen = SERVOMAX; pulselen > SERVOMIN; pulselen--){
+    if (digitalRead(4) == HIGH){
+    pwm.setPWM(3, 0, pulselen);
+    delay(30);
+    }
+   }
+  }
+
+
+
+}
