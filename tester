@@ -11,10 +11,9 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
 const int buttonPin0 = 7;
 const int buttonPin1 = 4;
 
-int buttonState = 0;
 byte guzik0 = 0;
 
-int ledState = HIGH;         // the current state of the output pin
+int buttonState;             // the current reading from the input pin
 int lastButtonState = LOW;   // the previous reading from the input pin
 
 unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
@@ -53,10 +52,6 @@ void loop() {
     if (reading != buttonState) {
       buttonState = reading;
 
-      // only toggle the LED if the new button state is HIGH
-      if (buttonState == HIGH) {
-        ledState = !ledState;
-      }
     }
   
  {
@@ -70,5 +65,7 @@ void loop() {
       guzik0=0;
       pwm.setPWM(0, 0, 380);
     }
- }  
+   }  
   }
+   lastButtonState = reading;
+}
